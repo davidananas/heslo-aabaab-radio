@@ -7,6 +7,11 @@ radio.onReceivedNumber(function (receivedNumber) {
         if (receivedNumber == 3) {
             basic.showIcon(IconNames.Sad)
             basic.showString("FALSE")
+        } else {
+            if (receivedNumber == 4) {
+                pins.servoWritePin(AnalogPin.P0, 0)
+                basic.showString("lock")
+            }
         }
     }
 })
@@ -28,7 +33,7 @@ input.onButtonPressed(Button.B, function () {
     USTUP = "" + USTUP + "B"
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    pins.servoWritePin(AnalogPin.P0, 0)
+    radio.sendNumber(4)
 })
 let USTUP = ""
 let heslo = ""
