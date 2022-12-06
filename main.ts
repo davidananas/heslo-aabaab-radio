@@ -1,25 +1,25 @@
 radio.onReceivedNumber(function (receivedNumber) {
+    Pripominka()
     if (receivedNumber == 2) {
         pins.servoWritePin(AnalogPin.P0, 90)
+        Uzamknout = 1
         basic.showIcon(IconNames.Happy)
         basic.pause(10000)
         basic.showIcon(IconNames.Asleep)
         basic.pause(1000)
-        led.setBrightness(107)
-        basic.pause(100000)
-        basic.clearScreen()
+        Pripominka()
     } else {
         if (receivedNumber == 3) {
+            Uzamknout = 1
             basic.showIcon(IconNames.Sad)
             basic.pause(10000)
             basic.showIcon(IconNames.Asleep)
             basic.pause(1000)
-            led.setBrightness(107)
-            basic.pause(100000)
-            basic.clearScreen()
+            Pripominka()
         } else {
             if (receivedNumber == 4) {
                 pins.servoWritePin(AnalogPin.P0, 0)
+                Uzamknout = 1
                 basic.showLeds(`
                     . # # # .
                     # . . . #
@@ -28,13 +28,10 @@ radio.onReceivedNumber(function (receivedNumber) {
                     # # # # #
                     `)
                 Prerus = 1
-                Uzamknout = 1
                 basic.pause(10000)
                 basic.showIcon(IconNames.Asleep)
                 basic.pause(1000)
-                led.setBrightness(107)
-                basic.pause(100000)
-                basic.clearScreen()
+                Pripominka()
             }
         }
     }
@@ -44,6 +41,33 @@ input.onButtonPressed(Button.A, function () {
     basic.clearScreen()
     USTUP = "" + USTUP + "A"
 })
+function Pripominka () {
+    if (Uzamknout == 1) {
+        for (let index = 0; index < 10000; index++) {
+            basic.clearScreen()
+            basic.showLeds(`
+                . # # # .
+                # . . . .
+                # # # # #
+                # # . # #
+                # # # # #
+                `)
+            basic.pause(500)
+            basic.clearScreen()
+            basic.showLeds(`
+                . # # # .
+                # . . . #
+                # # # # #
+                # # . # #
+                # # # # #
+                `)
+            if (Prerus == 1) {
+                break;
+basic.clearScreen()
+            }
+        }
+    }
+}
 input.onButtonPressed(Button.AB, function () {
     if (heslo == USTUP) {
         radio.sendNumber(2)
@@ -66,31 +90,13 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     basic.showString("lock")
 })
 let USTUP = ""
-let Uzamknout = 0
 let Prerus = 0
+let Uzamknout = 0
 let heslo = ""
 heslo = "AABAAB"
+Uzamknout = 0
+Prerus = 1
 radio.sendNumber(4)
 basic.forever(function () {
     radio.setGroup(5)
-    if (Uzamknout == 1) {
-        for (let index = 0; index < 10000; index++) {
-            basic.showLeds(`
-                . # # # .
-                # . . . .
-                # # # # #
-                # # . # #
-                # # # # #
-                `)
-            basic.pause(500)
-            basic.clearScreen()
-            basic.showLeds(`
-                . # # # .
-                # . . . #
-                # # # # #
-                # # . # #
-                # # # # #
-                `)
-        }
-    }
 })
