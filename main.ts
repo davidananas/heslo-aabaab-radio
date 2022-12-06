@@ -14,7 +14,6 @@ radio.onReceivedNumber(function (receivedNumber) {
         } else {
             if (receivedNumber == 4) {
                 pins.servoWritePin(AnalogPin.P0, 0)
-                Uzamknout = 1
                 basic.showLeds(`
                     . # # # .
                     # . . . #
@@ -24,7 +23,8 @@ radio.onReceivedNumber(function (receivedNumber) {
                     `)
                 basic.pause(10000)
                 basic.showIcon(IconNames.Asleep)
-                basic.pause(1000)
+                basic.pause(10000)
+                led.setBrightness(67)
             }
         }
     }
@@ -34,34 +34,6 @@ input.onButtonPressed(Button.A, function () {
     basic.clearScreen()
     USTUP = "" + USTUP + "A"
 })
-function Pripominka () {
-    if (Uzamknout == 1) {
-        for (let index = 0; index < 10000; index++) {
-            basic.showLeds(`
-                . # # # .
-                # . . . .
-                # # # # #
-                # # . # #
-                # # # # #
-                `)
-            basic.pause(1000)
-            basic.clearScreen()
-            basic.showLeds(`
-                . # # # .
-                # . . . #
-                # # # # #
-                # # . # #
-                # # # # #
-                `)
-            basic.pause(1000)
-            basic.clearScreen()
-            if (Prerus == 1) {
-                break;
-basic.clearScreen()
-            }
-        }
-    }
-}
 input.onButtonPressed(Button.AB, function () {
     if (heslo == USTUP) {
         radio.sendNumber(2)
@@ -70,7 +42,6 @@ input.onButtonPressed(Button.AB, function () {
     } else {
         radio.sendNumber(3)
         basic.showString("FAILED")
-        Uzamknout = 1
     }
     basic.pause(500)
     basic.clearScreen()
@@ -84,19 +55,40 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     pins.servoWritePin(AnalogPin.P0, 0)
     radio.sendNumber(4)
     basic.showString("lock")
-    Prerus = 1
+    Uzamknout = 5
+    Zhasni = 2
 })
+let Zhasni = 0
 let USTUP = ""
-let Prerus = 0
 let Uzamknout = 0
 let heslo = ""
 heslo = "AABAAB"
 Uzamknout = 0
-Prerus = 1
+let Prerus = 1
 radio.sendNumber(4)
 basic.forever(function () {
     radio.setGroup(5)
 })
 basic.forever(function () {
-    Pripominka()
+    if (Uzamknout == 1) {
+        basic.showLeds(`
+            . # # # .
+            # . . . .
+            # # # # #
+            # # . # #
+            # # # # #
+            `)
+        basic.pause(1000)
+        basic.clearScreen()
+        basic.showLeds(`
+            . # # # .
+            # . . . #
+            # # # # #
+            # # . # #
+            # # # # #
+            `)
+    }
+    if (Zhasni == 2) {
+        basic.clearScreen()
+    }
 })
